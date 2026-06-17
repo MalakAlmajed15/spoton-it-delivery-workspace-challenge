@@ -1,201 +1,245 @@
-# SpotOn IT Delivery Workspace Intern Challenge
+# SpotOn IT Delivery Workspace Challenge
 
-Welcome. This is a 2-day full-stack challenge for the Full Stack Developer Intern role at SpotOn.
+> Build a real full-stack software delivery workspace in 2 days using Next.js, NestJS, PostgreSQL, authentication, workflow rules, QA checks, releases, scoring, and AI-assisted development.
 
-This repository is a simplified assessment project. It is not the production codebase. The starter contains only a small login flow, a basic score surface, and an incomplete IT Workspace shell.
+![Challenge](https://img.shields.io/badge/challenge-2%20days-ff5100)
+![Frontend](https://img.shields.io/badge/frontend-Next.js%20%2B%20React-272c4d)
+![Backend](https://img.shields.io/badge/backend-NestJS-272c4d)
+![Database](https://img.shields.io/badge/database-PostgreSQL-336791)
+![AI](https://img.shields.io/badge/AI%20usage-disclose%20prompts-6f42c1)
 
-Your job is to turn the IT Workspace into a useful software delivery module.
+## Table of Contents
 
-## Product Story
+- [At a Glance](#at-a-glance)
+- [Mission](#mission)
+- [What You Are Building](#what-you-are-building)
+- [Starter Project](#starter-project)
+- [Quick Start](#quick-start)
+- [Core Modules](#core-modules)
+- [Workflow Rules](#workflow-rules)
+- [Level System](#level-system)
+- [Creative Feature](#creative-feature)
+- [Score System](#score-system)
+- [Codebase Investigation](#codebase-investigation)
+- [Recommended Delivery Approach](#recommended-delivery-approach)
+- [Technical Standards](#technical-standards)
+- [AI Prompt Logging](#ai-prompt-logging)
+- [GitHub Submission Expectations](#github-submission-expectations)
+- [Submission Checklist](#submission-checklist)
+- [Demo Video Guide](#demo-video-guide)
+- [What We Value](#what-we-value)
 
-SpotOn has an internal Project Engine used by teams to manage work. The IT/software team needs a focused workspace for the software engineering lifecycle:
+## At a Glance
 
-```txt
-request / idea -> planning -> development -> QA/testing -> release -> follow-up
+| Icon | Area | Expectation |
+| --- | --- | --- |
+| 🕒 | Time | 2 days |
+| 🎯 | Main goal | Build the IT Delivery Workspace |
+| ⚛️ | Frontend | Next.js and React |
+| 🧱 | Backend | NestJS REST API |
+| 🗄️ | Database | PostgreSQL |
+| 🧩 | Required modules | Work Items, QA Checks, Release Notes |
+| 🤖 | AI usage | Allowed, documented, and reviewed |
+| ✅ | Strong signal | Clean workflow rules, useful UX, tests, prompt log |
+
+## Mission
+
+You are working on a simplified internal product called **SpotOn Project Engine**.
+
+The IT/software team needs an **IT Delivery Workspace** to manage the software engineering lifecycle:
+
+```mermaid
+flowchart LR
+  A[Request / Idea] --> B[Planning]
+  B --> C[Development]
+  C --> D[QA / Testing]
+  D --> E[Ready for Release]
+  E --> F[Released]
+  F --> G[Follow-up]
 ```
 
-The IT Delivery Workspace should help the team answer practical questions:
+Your task is to turn the starter IT Workspace into a useful production-style module.
 
-- What are we building or fixing?
-- Who owns each work item?
-- What stage is each item in?
-- What still needs QA?
-- What is ready to release?
-- What shipped, when, and in which release?
-- Which useful engineering actions should earn score points?
+This is not only a CRUD task. We want to see how you think about:
 
-This is not just a CRUD task. We want to see how you think about workflow, product behavior, data relationships, user experience, and maintainable code.
+- workflow design
+- backend business rules
+- database relationships
+- frontend usability
+- score/reward behavior
+- debugging and investigation
+- AI-assisted development judgment
 
-## Time Limit
+## What You Are Building
 
-You have 2 days.
+The workspace should help an IT/software team answer:
 
-You are not expected to finish every level. The challenge is layered. A clean Level 3 is better than an unstable Level 5.
+| Question | Product Area |
+| --- | --- |
+| What are we building or fixing? | IT Work Items |
+| Who owns each item? | Assignment and My Work |
+| What stage is each item in? | Workflow status |
+| What still needs QA? | QA Checks |
+| What is ready to release? | Release readiness |
+| What shipped, when, and in which version? | Release Notes |
+| Which engineering actions should earn points? | Score System |
 
-Work in this order:
+## Starter Project
 
-1. Make the core flow work.
-2. Keep the code understandable.
-3. Add tests where they protect important behavior.
-4. Add creative polish only after the foundation is stable.
+This repository is a simplified assessment project. It is not the production codebase.
 
-## Tech Stack
+| Folder | Meaning |
+| --- | --- |
+| `frontend-next` | Web App, built with Next.js and React |
+| `backend-nest` | API Server, built with NestJS |
+| `docker-compose.yml` | PostgreSQL service |
 
-- Next.js / React in `frontend-next`
-- NestJS in `backend-nest`
-- PostgreSQL
-- REST APIs
-- Authentication
-- Git/GitHub
-- AI tools are allowed, but must be disclosed
+The starter contains:
 
-## Starter Login
+- login page
+- basic JWT auth
+- basic score page and score API
+- IT Workspace shell page
+- placeholder IT Workspace API endpoints
+- PostgreSQL Docker service
+
+## Quick Start
+
+### 1. Install Dependencies
+
+```bash
+npm run install:all
+```
+
+### 2. Start PostgreSQL
+
+```bash
+docker compose up -d postgres
+```
+
+### 3. Start The API
+
+```bash
+npm run dev:api
+```
+
+API URL:
+
+```txt
+http://localhost:3001
+```
+
+### 4. Start The Web App
+
+Open another terminal:
+
+```bash
+npm run dev:web
+```
+
+Web URL:
+
+```txt
+http://localhost:3000
+```
+
+### 5. Login
 
 ```txt
 Email: intern@spoton.test
 Password: intern123
 ```
 
-## Setup
+## Core Modules
 
-Install dependencies:
+Build three connected modules.
 
-```bash
-npm run install:all
-```
-
-Start PostgreSQL:
-
-```bash
-docker compose up -d postgres
-```
-
-Run the API:
-
-```bash
-npm run dev:api
-```
-
-Run the web app in another terminal:
-
-```bash
-npm run dev:web
-```
-
-Open:
-
-```txt
-http://localhost:3000
-```
-
-The API defaults to:
-
-```txt
-http://localhost:3001
-```
-
-## What Is Already Included
-
-The starter is small:
-
-- Login page
-- Basic JWT auth
-- Basic score page and score API
-- IT Workspace shell page
-- Placeholder IT Workspace API endpoints
-- PostgreSQL Docker service
-
-Everything else from the larger product has been removed so you can focus on the assignment.
-
-## What You Need To Build
-
-Build the IT Delivery Workspace as three connected modules.
-
-## Module 1: IT Work Items
-
-This is the main software delivery tracker.
+## 1. IT Work Items
 
 A work item represents a software feature, bug, improvement, or maintenance task.
 
-Required fields:
+### Required Fields
 
-- title
-- description
-- type: `feature`, `bug`, `improvement`, `maintenance`
-- status: `backlog`, `planned`, `in_progress`, `qa`, `ready_for_release`, `released`
-- priority: `low`, `medium`, `high`, `urgent`
-- assignee
-- due date
-- created by
-- created at
-- updated at
+| Field | Notes |
+| --- | --- |
+| `title` | short clear title |
+| `description` | enough detail for implementation/testing |
+| `type` | `feature`, `bug`, `improvement`, `maintenance` |
+| `status` | `backlog`, `planned`, `in_progress`, `qa`, `ready_for_release`, `released` |
+| `priority` | `low`, `medium`, `high`, `urgent` |
+| `assignee` | assigned user/person |
+| `dueDate` | target date |
+| `createdBy` | creator |
+| `createdAt` / `updatedAt` | timestamps |
 
-Required behavior:
+### Required Behavior
 
 - Create, list, view, update, and delete work items.
-- Store work items in PostgreSQL.
-- Protect work item APIs with authentication.
+- Persist work items in PostgreSQL.
+- Protect APIs with authentication.
 - Add search and filters for status, priority, assignee, and text.
 - Add a `My Work` view or filter.
-- Handle loading, empty, error, and success states in the UI.
+- Show clear loading, empty, error, and success states.
 
-## Module 2: QA Checks
+## 2. QA Checks
 
 QA checks represent testing and quality control for a work item.
 
-Required fields:
+### Required Fields
 
-- linked work item
-- test title
-- expected result
-- actual result
-- status: `pending`, `passed`, `failed`
-- tester
-- notes
-- created at
-- updated at
+| Field | Notes |
+| --- | --- |
+| `workItemId` | linked work item |
+| `testTitle` | what is being tested |
+| `expectedResult` | expected behavior |
+| `actualResult` | observed behavior |
+| `status` | `pending`, `passed`, `failed` |
+| `tester` | person who tested |
+| `notes` | optional context |
+| `createdAt` / `updatedAt` | timestamps |
 
-Required behavior:
+### Required Behavior
 
 - Add QA checks to a work item.
-- Mark checks as passed or failed.
-- Show QA progress on the work item list and detail page.
-- A work item cannot move to `ready_for_release` unless all QA checks are `passed`.
-- A work item with zero QA checks should not be considered ready for release.
+- Mark checks as `pending`, `passed`, or `failed`.
+- Show QA progress on list and detail views.
+- Block release readiness unless all QA checks are passed.
+- Treat zero QA checks as not ready for release.
 
-## Module 3: Release Notes
+## 3. Release Notes
 
 Release notes represent deployment planning and shipped work.
 
-Required fields:
+### Required Fields
 
-- version
-- release date
-- summary
-- deployment status: `draft`, `scheduled`, `deployed`, `rolled_back`
-- linked work items
-- created at
-- updated at
+| Field | Notes |
+| --- | --- |
+| `version` | example: `v1.2.0` |
+| `releaseDate` | planned or actual release date |
+| `summary` | short release summary |
+| `deploymentStatus` | `draft`, `scheduled`, `deployed`, `rolled_back` |
+| `linkedWorkItems` | ready work items included in the release |
+| `createdAt` / `updatedAt` | timestamps |
 
-Required behavior:
+### Required Behavior
 
 - Create, list, and view releases.
 - Link ready work items to a release.
-- Only `ready_for_release` work items can be linked to a release.
-- When a release is marked `deployed`, linked work items should become `released`.
+- Only `ready_for_release` work items can be linked.
+- When a release becomes `deployed`, linked work items become `released`.
 - Show which work shipped in each release.
 
 ## Workflow Rules
 
-Implement workflow rules on the backend. The frontend should guide the user, but the backend must protect the data.
+Backend services must protect workflow rules. The frontend should guide the user, but the backend must enforce correctness.
 
-Expected work item flow:
+Expected happy path:
 
 ```txt
 backlog -> planned -> in_progress -> qa -> ready_for_release -> released
 ```
 
-Reasonable backward movement is allowed when it makes sense, for example:
+Reasonable backward movement is allowed when it supports real engineering work:
 
 ```txt
 qa -> in_progress
@@ -206,20 +250,59 @@ Invalid examples:
 
 - `backlog` directly to `released`
 - `in_progress` directly to `ready_for_release` without QA
-- `ready_for_release` when QA is failed or pending
+- `ready_for_release` while QA is failed or pending
 - adding a non-ready item to a release
+- deploying the same release twice for duplicate score points
+
+## Level System
+
+You are not expected to finish every level. The challenge is layered. A clean Level 3 is better than an unstable Level 5.
+
+| Level | Name | Expected Outcome |
+| ---: | --- | --- |
+| 1 | Core Work Items | Authenticated CRUD, PostgreSQL persistence, useful pages/forms |
+| 2 | Workflow and Ownership | Valid transitions, assignees, My Work, history, search/filters |
+| 3 | QA Checks | QA states, QA progress, backend readiness rule |
+| 4 | Release Notes | Releases, linked ready work, deployment behavior |
+| 5 | Score, Tests, Polish | Score integration, idempotency, tests, polished UX |
+
+Suggested approach:
+
+1. Finish Level 1 cleanly.
+2. Add backend workflow rules before UI polish.
+3. Add QA readiness rules before release deployment.
+4. Add score events only after the workflow is reliable.
+5. Add the creative feature after the main flow works.
+
+## Creative Feature
+
+Add one creative feature that makes this feel like a real engineering tool. It should improve planning, QA, release safety, or follow-up. It should not be decoration only.
+
+Choose one or invent your own:
+
+| Idea | What It Should Do |
+| --- | --- |
+| Release Readiness Board | Show exactly what blocks each item from release |
+| QA Risk Meter | Calculate risk from priority, failed QA, overdue date, missing assignee |
+| Engineering Timeline | Show item progress from idea to release with activity events |
+| Smart Next Action | Recommend the next practical action from current workflow state |
+| Deployment Checklist | Prevent deployment until checklist items are complete |
+| AI-Ready Brief | Generate a concise implementation brief from item details and QA notes |
+| Post-Release Review | Capture what shipped, what failed, and follow-up tasks |
 
 ## Score System
 
 The starter has a basic score API/page. Extend it in a meaningful way.
 
-Suggested scoring events:
+Suggested score events:
 
-- Create a useful work item: +1
-- Move a work item to QA: +1
-- Complete a QA check: +1
-- Move a work item to ready for release: +2
-- Deploy a release: +3
+| Action | Points |
+| --- | ---: |
+| Create a useful work item | +1 |
+| Move a work item to QA | +1 |
+| Complete a QA check | +1 |
+| Move a work item to ready for release | +2 |
+| Deploy a release | +3 |
 
 Important rule:
 
@@ -227,148 +310,141 @@ Important rule:
 
 Example: clicking deploy twice should not award deploy points twice.
 
-## Level System
-
-This is how we will read your submission.
-
-### Level 1: Core Work Items
-
-Minimum acceptable submission:
-
-- Authenticated work item CRUD
-- PostgreSQL persistence
-- Basic pages and forms
-- Loading/error/empty states
-- Clean setup instructions
-
-### Level 2: Workflow and Ownership
-
-Add:
-
-- Status transitions
-- Backend validation for invalid transitions
-- Assignee support
-- My Work view/filter
-- Activity/status history
-- Search and filters
-
-### Level 3: QA Checks
-
-Add:
-
-- QA check CRUD or practical equivalent
-- Pass/fail/pending state
-- QA progress on work item cards/detail
-- Backend readiness rule
-- Clear UI feedback when readiness is blocked
-
-### Level 4: Release Notes
-
-Add:
-
-- Release CRUD
-- Link ready work items
-- Deploy release
-- Auto-update linked items to `released`
-- Release detail page
-
-### Level 5: Score, Tests, and Product Polish
-
-Add:
-
-- Score integration for meaningful engineering actions
-- Idempotent score events
-- Useful tests for workflow rules
-- Good UX polish
-- Clean responsive layout
-- Thoughtful error messages and toasts
-
-## Creative Challenge
-
-After the core levels are stable, add one creative feature that makes the IT Delivery Workspace feel like a real engineering tool.
-
-Choose one of these or invent your own:
-
-- **Release Readiness Board:** a dashboard that shows what blocks each item from release.
-- **QA Risk Meter:** calculate risk from priority, failed QA count, overdue date, and missing assignee.
-- **Engineering Timeline:** visual timeline from idea to release with activity events.
-- **Smart Next Action:** each work item shows the next recommended action based on status and QA state.
-- **Deployment Checklist:** release cannot deploy until checklist items are complete.
-- **AI-Ready Brief:** generate a concise implementation brief from a work item, including acceptance criteria and QA notes.
-- **Post-Release Review:** after deployment, collect what shipped, what failed, and follow-up tasks.
-
-A creative feature should not be decoration only. It should improve how a software team plans, tests, or ships work.
-
 ## Codebase Investigation
 
-Before building, run the project and inspect the existing frontend and backend structure. If you find setup problems, incomplete behavior, or blockers, decide whether they affect your implementation. Fix the important ones and document what you changed in `DECISIONS.md`.
+Before building:
 
-Do not spend your whole time on unrelated cleanup. Prioritize what matters for the IT Delivery Workspace.
+1. Run the project.
+2. Inspect the frontend and backend structure.
+3. Identify what needs to change for the IT Delivery Workspace.
+4. Fix blockers that affect your implementation.
+5. Document important decisions in `DECISIONS.md`.
 
-## Technical Expectations
+Do not spend your whole time on unrelated cleanup. Prioritize what matters for this module.
 
-Backend expectations:
+## Recommended Delivery Approach
+
+A strong submission usually follows this order:
+
+| Step | Focus | Why It Matters |
+| ---: | --- | --- |
+| 1 | Run and inspect the starter | Shows debugging and codebase navigation |
+| 2 | Design the database schema | Prevents fragile feature work later |
+| 3 | Build Work Items end to end | Creates the first real vertical slice |
+| 4 | Add backend workflow rules | Protects the system from invalid data |
+| 5 | Add QA Checks | Proves relationship modeling and validation |
+| 6 | Add Release Notes | Tests multi-entity workflow behavior |
+| 7 | Add score events | Rewards meaningful actions after rules are stable |
+| 8 | Add tests and polish | Makes the solution reliable and reviewable |
+| 9 | Add one creative feature | Shows product thinking beyond instructions |
+
+Good engineering tradeoff: finish a small reliable flow before expanding the surface area.
+
+## Technical Standards
+
+### Backend
 
 - Use NestJS controllers, services, and DTOs.
-- Store new module data in PostgreSQL.
+- Store module data in PostgreSQL.
 - Keep business rules in backend services.
 - Protect APIs with authentication.
 - Validate input.
 - Return consistent error messages.
 - Avoid hardcoded fake data for completed features.
 
-Frontend expectations:
+### Frontend
 
-- Use the existing simple design direction.
 - Build real product screens, not a landing page.
 - Keep the workflow easy to understand.
 - Handle loading, empty, error, and success states.
 - Keep the UI responsive.
 - Make forms clear and practical.
+- Keep visual design clean and consistent with the starter.
 
-Database expectations:
+### Database
 
 - Design tables with sensible relationships.
 - Use stable IDs.
 - Track created/updated timestamps.
-- Avoid storing everything as one unstructured JSON blob.
+- Avoid storing the whole module as one unstructured JSON blob.
 - Think about constraints that protect workflow rules.
 
-Git expectations:
+### Git
 
 - Use clear commits.
 - Do not commit secrets or real `.env` files.
 - Keep unrelated changes out of the submission.
-- Include a useful final README/notes update if setup changed.
+- Include setup notes if commands or environment variables changed.
 
-## AI Usage
+## AI Prompt Logging
 
-AI tools are allowed. We care about how you use them.
+AI tools are allowed. We care about how you use them and how well you review the result.
 
-Create `AI_USAGE.md` using `AI_USAGE_TEMPLATE.md`.
+You must submit:
 
-Include:
+- `AI_USAGE.md`, based on `AI_USAGE_TEMPLATE.md`
+- `PROMPT_LOG.md`, based on `PROMPT_LOG_TEMPLATE.md`
 
-- tools used
-- important prompts
-- what AI helped with
-- what you changed manually
-- what AI got wrong
-- known limitations
+### Prompt Logging Rules
 
-You must be able to explain all submitted code.
+Best practical method:
 
-## Required Submission
+1. Start `PROMPT_LOG.md` before coding.
+2. Work in small AI-assisted slices.
+3. Commit after each meaningful slice.
+4. Add the commit hash to the prompt-log entry.
+5. In `AI_USAGE.md`, summarize the big patterns and mistakes.
 
-Submit:
+For each meaningful AI-assisted step, log:
 
-- GitHub repository link or pull request link
-- short demo video, 3-5 minutes
-- `AI_USAGE.md`
-- `DECISIONS.md`
-- setup instructions
-- tests added and commands run
-- known limitations or unfinished levels
+- timestamp
+- tool used
+- goal
+- exact prompt or a faithful summary if the prompt included private context
+- AI output summary
+- files changed because of that output
+- what you manually reviewed or corrected
+- related commit hash, if available
+
+If your AI tool supports exporting chats, you may also include exported transcripts in an `ai-transcripts/` folder. Do not include secrets, tokens, passwords, private keys, or personal data.
+
+Good AI usage is not about asking AI to do everything. Good AI usage means you can explain the code, reject weak suggestions, test the result, and make clear engineering decisions.
+
+## GitHub Submission Expectations
+
+Use GitHub like a real engineering handoff:
+
+- Keep commits readable and grouped by feature or fix.
+- Do not commit secrets, local database dumps, or real `.env` files.
+- Update setup instructions if you change commands or environment variables.
+- Keep generated files out of the repository.
+- Explain important tradeoffs in `DECISIONS.md`.
+- Reference related prompt-log entries when a major feature was AI-assisted.
+
+Recommended commit style examples:
+
+```txt
+feat: add work item persistence
+feat: enforce QA readiness rule
+feat: add release deployment flow
+test: cover invalid work item transitions
+docs: add setup notes and limitations
+```
+
+## Submission Checklist
+
+Submit a GitHub repository link or pull request link.
+
+Your submission should include:
+
+- [ ] working setup instructions
+- [ ] short demo video, 3-5 minutes
+- [ ] `AI_USAGE.md`
+- [ ] `PROMPT_LOG.md`
+- [ ] `DECISIONS.md`
+- [ ] tests added and commands run
+- [ ] known limitations or unfinished levels
+- [ ] no committed secrets
 
 ## Demo Video Guide
 
@@ -380,9 +456,10 @@ In your demo, show:
 4. Show QA behavior if implemented.
 5. Show release behavior if implemented.
 6. Show score behavior if implemented.
-7. Mention what you would improve next.
+7. Show your creative feature if implemented.
+8. Mention what you would improve next.
 
-## What We Value Most
+## What We Value
 
 We value:
 

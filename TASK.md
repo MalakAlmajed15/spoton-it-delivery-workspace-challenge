@@ -2,19 +2,17 @@
 
 Read `README.md` first. It is the main challenge brief.
 
-Your task is to build the **IT Delivery Workspace**, a small software engineering workflow module for:
+Build the **IT Delivery Workspace**, a small software engineering workflow module for:
 
 ```txt
 request / idea -> planning -> development -> QA/testing -> release -> follow-up
 ```
 
-Build three connected modules:
+Core modules:
 
 1. IT Work Items
 2. QA Checks
 3. Release Notes
-
-The challenge is level-based. You are not expected to finish every level in 2 days. Finish lower levels cleanly before attempting higher levels.
 
 Minimum target:
 
@@ -32,3 +30,9 @@ Strong target:
 - score integration
 - meaningful tests
 - one creative feature that improves the engineering workflow
+
+Required submission files:
+
+- `AI_USAGE.md`
+- `PROMPT_LOG.md`
+- `DECISIONS.md`

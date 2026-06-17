@@ -1,52 +1,56 @@
 # AI Usage
 
+Use this file to explain how you used AI tools during the challenge.
+
 ## Tools Used
 
-List tools used:
+| Tool | Used? | Notes |
+| --- | --- | --- |
+| ChatGPT | Yes/No |  |
+| Claude | Yes/No |  |
+| Codex | Yes/No |  |
+| Cursor | Yes/No |  |
+| Other | Yes/No |  |
 
-- ChatGPT:
-- Claude:
-- Codex:
-- Cursor:
-- Other:
+## Summary
 
-## Important Prompts
+Briefly explain how AI helped you and where you made the final engineering decisions yourself.
 
-Paste the most important prompts you used.
-
-```txt
-Prompt 1:
-
-Prompt 2:
-
-Prompt 3:
-```
-
-## AI Contributions
-
-Explain what AI helped with:
+## Main Areas AI Helped With
 
 - Architecture:
 - Backend:
 - Frontend:
+- Database:
 - Tests:
 - Debugging:
+- Documentation:
 
-## Manual Review
+## What You Reviewed Manually
 
-Explain what you reviewed, changed, rejected, or fixed manually.
+Explain what you checked, changed, rejected, or rewrote after AI suggestions.
+
+## What AI Got Wrong
+
+List at least one weak, incorrect, incomplete, or risky AI suggestion you noticed.
+
+## Commands Run
+
+List the important commands you ran.
+
+```bash
+npm run install:all
+docker compose up -d postgres
+npm run dev:api
+npm run dev:web
+npm run build
+npm test
+```
 
 ## Known Limitations
 
 List anything incomplete, risky, or not fully tested.
 
-## Commands Run
+## Prompt Log
 
-List setup/test commands you ran.
-
-```txt
-npm install
-npm test
-npm run lint
-```
-
+Create `PROMPT_LOG.md` using `PROMPT_LOG_TEMPLATE.md`.
