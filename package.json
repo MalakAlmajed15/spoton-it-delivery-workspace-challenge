@@ -1,0 +1,14 @@
+{
+  "name": "spoton-it-workspace-intern-challenge",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "install:all": "npm --prefix backend-nest install && npm --prefix frontend-next install",
+    "dev:api": "npm --prefix backend-nest run start:dev",
+    "dev:web": "npm --prefix frontend-next run dev -- -p 3000",
+    "build:api": "npm --prefix backend-nest run build",
+    "build:web": "npm --prefix frontend-next run build",
+    "test:api": "npm --prefix backend-nest run test",
+    "test:web": "npm --prefix frontend-next run test"
+  }
+}
