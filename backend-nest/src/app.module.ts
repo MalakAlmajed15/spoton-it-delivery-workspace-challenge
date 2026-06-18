@@ -8,6 +8,7 @@ import { ScoreService } from './score/score.service';
 import { ItWorkspaceController } from './it-workspace/it-workspace.controller';
 import { ItWorkspaceService } from './it-workspace/it-workspace.service';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { JwtAuthGuard } from './common/jwt-auth.guard';
     }),
   ],
   controllers: [HealthController, AuthController, ScoreController, ItWorkspaceController],
-  providers: [AuthService, ScoreService, ItWorkspaceService, JwtAuthGuard],
+  providers: [AuthService, ScoreService, ItWorkspaceService, JwtAuthGuard, PrismaService],
 })
 export class AppModule {}
