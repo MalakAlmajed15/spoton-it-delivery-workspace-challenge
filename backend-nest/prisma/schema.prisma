@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model WorkItem {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  type        String   @default("feature")
+  status      String   @default("backlog")
+  priority    String   @default("medium")
+  assignee    String?
+  dueDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  qaChecks     QaCheck[]
+  releaseItems ReleaseItem[]
+}
+
+model QaCheck {
+  id             String   @id @default(uuid())
+  workItemId     String
+  title          String
+  expectedResult String
+  actualResult   String?
+  status         String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  workItem       WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+}
+
+model Release {
+  id          String   @id @default(uuid())
+  version     String   @unique
+  summary     String?
+  status      String   @default("draft")
+  releasedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  releaseItems ReleaseItem[]
+}
+
+model ReleaseItem {
+  id         String  @id @default(uuid())
+  releaseId  String
+  workItemId String
+
+  release    Release  @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  workItem   WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+
+  @@unique([releaseId, workItemId])
+}
