@@ -1,5 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { ScoreService } from 'src/score/score.service';
+import type { RequestUser } from '../common/request-user';
 
 const VALID_TRANSITIONS: Record<string, string[]> = {
   backlog: ['planned'],
@@ -13,7 +15,7 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
 @Injectable()
 export class ItWorkspaceService {
   
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly score: ScoreService,) {}
   
   async summary() {
     const [workItems, qaChecks, releases] = await Promise.all([
@@ -24,12 +26,12 @@ export class ItWorkspaceService {
     return {counts : {workItems, qaChecks, releases}};
   }
 
-  async listWorkItems(status?: string, priority?: string, asignee?: string){
+  async listWorkItems(status?: string, priority?: string, assignee?: string){
     return this.prisma.workItem.findMany({
       where: {
         ...(status && { status }),
         ...(priority && { priority }),
-        ...(asignee && { asignee }),
+        ...(assignee && { assignee }),
       },
       include: {qaChecks:true},
       orderBy: { createdAt: 'desc' },
@@ -50,10 +52,14 @@ export class ItWorkspaceService {
     description?: string;
     type?: string;
     priority?: string;
-    asignee?: string;
+    assignee?: string;
     dueDate?: string;
-  }) {
-    return this.prisma.workItem.create({data});
+  },
+    user: RequestUser,
+  ) {
+    const item = await this.prisma.workItem.create({data});
+    this.score.award(user, 'create_work_item', 10);
+    return item;
   }
 
   async updateWorkItem(id:string, data: {
@@ -61,14 +67,14 @@ export class ItWorkspaceService {
     description?: string;
     type?: string;
     priority?: string;
-    asignee?: string;
+    assignee?: string;
     dueDate?: string;
   }) {
     await this.getWorkItem(id);
     return this.prisma.workItem.update({where: {id}, data}); 
   }
 
-  async transitionStatus(id: string, newStatus: string) {
+  async transitionStatus(id: string, newStatus: string, user: RequestUser) {
     const item = await this.getWorkItem(id);
     const allowedTransitions = VALID_TRANSITIONS[item.status] ?? [];
     if (!allowedTransitions.includes(newStatus)) {
@@ -80,7 +86,11 @@ export class ItWorkspaceService {
     const allPassed = checks.every(c => c.status == 'passes');
     if (!allPassed) throw new BadRequestException('All QA checks must pass before moving to ready_for_release');
   }
-  return this.prisma.workItem.update({ where: { id }, data: { status: newStatus } });
+  const updated = await this.prisma.workItem.update({where: {id}, data: {status: newStatus}});
+  if (newStatus === 'ready_for_release') {
+    this.score.award(user, 'work_item_ready_for_release', 10);
+  }
+  return updated;
 }
 
   async deleteWorkItem(id: string) {

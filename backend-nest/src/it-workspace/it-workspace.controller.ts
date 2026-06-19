@@ -2,6 +2,8 @@ import { Controller, Get, UseGuards, Post, Patch, Delete, Param, Body, Query } f
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { ItWorkspaceService } from './it-workspace.service';
 import { IsString, MinLength, IsOptional } from 'class-validator';
+import { CurrentUser } from '../common/current-user.decorator';
+import type { RequestUser } from '../common/request-user';
 
 class CreateWorkItemDto{
   @IsString()
@@ -85,8 +87,8 @@ export class ItWorkspaceController {
   }
 
   @Post('work-items')
-  createWorkItem(@Body() body: CreateWorkItemDto) {
-    return this.workspace.createWorkItem(body);
+  createWorkItem(@Body() body: CreateWorkItemDto, @CurrentUser() user: RequestUser) {
+    return this.workspace.createWorkItem(body, user);
   }
 
   @Patch('work-items/:id')
@@ -95,13 +97,14 @@ export class ItWorkspaceController {
   }
 
   @Patch('work-items/:id/status')
-  transitionStatus(@Param('id') id: string, @Body() body: TransitionStatusDto) {
-    return this.workspace.transitionStatus(id, body.status);
+  transitionStatus(@Param('id') id: string, @Body() body: TransitionStatusDto, @CurrentUser() user: RequestUser) {
+    return this.workspace.transitionStatus(id, body.status, user);
   }
 
   @Delete('work-items/:id')
   deleteWorkItem(@Param('id') id: string) {
     return this.workspace.deleteWorkItem(id);
   }
+
 }
 

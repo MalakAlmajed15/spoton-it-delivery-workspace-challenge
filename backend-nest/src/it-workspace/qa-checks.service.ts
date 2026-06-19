@@ -1,9 +1,11 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {PrismaService} from '../prisma.service';
+import { ScoreService } from '../score/score.service';
+import type { RequestUser } from '../common/request-user';
 
 @Injectable()
 export class QaChecksService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService, private readonly score: ScoreService) {}
 
     async list(workItemId: string) {
         return this.prisma.qaCheck.findMany({
@@ -20,10 +22,14 @@ export class QaChecksService {
         });
     }
 
-    async update(id: string, data: {actualResult?: string; status?: string}) {
+    async update(id: string, data: {actualResult?: string; status?: string}, user: RequestUser) {
         const check = await this.prisma.qaCheck.findUnique({where: {id}});
         if (!check) throw new NotFoundException(`QA check with ID ${id} not found`);
-        return this.prisma.qaCheck.update({where: {id}, data});
+        const update = await this.prisma.qaCheck.update({where: {id}, data});
+        if (data.status === 'passes' && check.status !== 'passes') {
+            this.score.award(user, 'qa_check_passed', 3);
+        }
+        return update;
     }
 
     async delete(id: string) {

@@ -11,6 +11,8 @@ import {
 import { IsString, IsOptional, MinLength } from 'class-validator';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { QaChecksService } from './qa-checks.service';
+import { CurrentUser } from '../common/current-user.decorator';
+import type { RequestUser } from '../common/request-user';
 
 class CreateQaCheckDto {
     @IsString()
@@ -48,8 +50,8 @@ export class QaChecksController {
     }
 
     @Patch('qa-checks/:id')
-    update(@Param('id') id: string, @Body() body: UpdateQaCheckDto) {
-        return this.qaChecks.update(id, body);
+    update(@Param('id') id: string, @Body() body: UpdateQaCheckDto, @CurrentUser() user: RequestUser) {
+        return this.qaChecks.update(id, body, user);
     }
 
     @Delete('qa-checks/:id')
