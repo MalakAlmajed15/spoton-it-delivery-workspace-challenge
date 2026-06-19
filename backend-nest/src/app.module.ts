@@ -21,6 +21,6 @@ import { QaChecksService } from './it-workspace/qa-checks.service';
     }),
   ],
   controllers: [HealthController, AuthController, ScoreController, ItWorkspaceController, QaChecksController],
-  providers: [AuthService, ScoreService, ItWorkspaceService, JwtAuthGuard, PrismaService],
+  providers: [AuthService, ScoreService, ItWorkspaceService, JwtAuthGuard, PrismaService, QaChecksService],
 })
 export class AppModule {}
