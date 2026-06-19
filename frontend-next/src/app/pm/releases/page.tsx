@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api, Release, WorkItem } from '@/lib/api';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 
 export default function ReleasesPage() {
   const [releases, setReleases] = useState<Release[]>([]);
@@ -14,7 +15,8 @@ export default function ReleasesPage() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
+const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
+const [deployTarget, setDeployTarget] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -76,16 +78,17 @@ export default function ReleasesPage() {
     }
   }
 
-  async function deploy(releaseId: string) {
-    if (!confirm('Deploy this release? Linked items will be marked as released.')) return;
+    async function deploy(releaseId: string) {
     setError('');
     try {
-      await api.deployRelease(releaseId);
-      load();
+        await api.deployRelease(releaseId);
+        load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to deploy');
+        setError(err instanceof Error ? err.message : 'Failed to deploy');
+    } finally {
+        setDeployTarget(null);
     }
-  }
+    }
 
   return (
     <section>
@@ -132,9 +135,9 @@ export default function ReleasesPage() {
                   <p>{release.summary || 'No summary'}</p>
                 </div>
                 {release.status !== 'deployed' && (
-                  <button className="button" onClick={() => deploy(release.id)}>
+                <button className="button" onClick={() => setDeployTarget(release.id)}>
                     Deploy
-                  </button>
+                </button>
                 )}
               </div>
 
@@ -187,6 +190,14 @@ export default function ReleasesPage() {
           ))}
         </div>
       )}
+      <ConfirmDialog
+        open={deployTarget !== null}
+        title="Deploy this release?"
+        message="Linked work items will be marked as released. This cannot be undone."
+        confirmLabel="Deploy"
+        onConfirm={() => deployTarget && deploy(deployTarget)}
+        onCancel={() => setDeployTarget(null)}
+      />
     </section>
   );
 }

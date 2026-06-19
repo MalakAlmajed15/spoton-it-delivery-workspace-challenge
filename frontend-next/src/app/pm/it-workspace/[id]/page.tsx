@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api, WorkItem, QaCheck } from '@/lib/api';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 
 const NEXT_STATUS: Record<string, string[]> = {
   backlog: ['planned'],
@@ -92,15 +93,18 @@ export default function WorkItemDetailPage() {
     }
   }
 
-  async function removeItem() {
-    if (!confirm('Delete this work item?')) return;
+const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+    async function removeItem() {
     try {
-      await api.deleteWorkItem(id);
-      router.push('/pm/it-workspace');
+        await api.deleteWorkItem(id);
+        router.push('/pm/it-workspace');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete');
+        setError(err instanceof Error ? err.message : 'Failed to delete');
+    } finally {
+        setConfirmingDelete(false);
     }
-  }
+    }
 
   if (loading) return <p>Loading...</p>;
   if (!item) return <div className="card empty">{error || 'Work item not found'}</div>;
@@ -115,8 +119,7 @@ export default function WorkItemDetailPage() {
           <h1>{item.title}</h1>
           <p>{item.description || 'No description provided.'}</p>
         </div>
-        <button className="button secondary" onClick={removeItem}>Delete</button>
-      </div>
+        <button className="button secondary" onClick={() => setConfirmingDelete(true)}>Delete</button>      </div>
 
       {error && <div className="error" style={{ marginBottom: 16 }}>{error}</div>}
 
@@ -190,6 +193,14 @@ export default function WorkItemDetailPage() {
           </button>
         </form>
       </div>
+        <ConfirmDialog
+                open={confirmingDelete}
+                title="Delete this work item?"
+                message="This action cannot be undone."
+                confirmLabel="Delete"
+                onConfirm={removeItem}
+                onCancel={() => setConfirmingDelete(false)}
+            />
     </section>
   );
 }
