@@ -14,6 +14,7 @@ export default function PmLayout({ children }: { children: React.ReactNode }) {
         <nav className="nav">
           <Link href="/pm/it-workspace">IT Workspace</Link>
           <Link href="/pm/score">Score</Link>
+          <Link href="/pm/releases">Releases</Link>
           <button
             onClick={() => {
               clearToken();
