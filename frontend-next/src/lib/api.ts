@@ -42,6 +42,11 @@ export type WorkItem = {
   qaChecks: QaCheck[];
 };
 
+export type ReadinessItem = WorkItem & {
+  blockers: string[];
+  readiness: 'ready' | 'blocked';
+};
+
 export type Release = {
   id: string;
   version: string;
@@ -90,7 +95,7 @@ export const api = {
   me: () => request<LoginResponse['user']>('/auth/me'),
   score: () => request<ScoreSummary>('/score/me'),
   workspaceSummary: () => request<WorkspaceSummary>('/it-workspace/summary'),
-  
+  releaseReadiness: () => request<ReadinessItem[]>('/it-workspace/release-readiness'),
  workItems: (filters?: { status?: string; priority?: string; assignee?: string }) => {
     const params = new URLSearchParams();
     if (filters?.status) params.set('status', filters.status);
