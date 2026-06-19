@@ -71,6 +71,11 @@ export class ItWorkspaceController {
   summary() {
     return this.workspace.summary();
   }
+  
+  @Get('release-readiness')
+releaseReadiness() {
+  return this.workspace.releaseReadiness();
+}
 
   @Get('work-items')
   listWorkItems(

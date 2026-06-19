@@ -97,4 +97,35 @@ export class ItWorkspaceService {
     await this.getWorkItem(id);
     return this.prisma.workItem.delete({ where: { id } });
   }
+
+  async releaseReadiness() {
+  const items = await this.prisma.workItem.findMany({
+    where: { status: { not: 'released' } },
+    include: { qaChecks: true },
+    orderBy: { updatedAt: 'desc' },
+  });
+
+  return items.map((item) => {
+    const blockers: string[] = [];
+
+    if (item.status === 'ready_for_release') {
+      return { ...item, blockers: [], readiness: 'ready' as const };
+    }
+
+    if (!['qa', 'ready_for_release'].includes(item.status)) {
+      blockers.push(`Item is in '${item.status}', must reach 'qa' stage first`);
+    } else {
+      if (item.qaChecks.length === 0) {
+        blockers.push('No QA checks added yet');
+      } else {
+        const failed = item.qaChecks.filter((c) => c.status === 'failed').length;
+        const pending = item.qaChecks.filter((c) => c.status === 'pending').length;
+        if (failed > 0) blockers.push(`${failed} QA check(s) failed`);
+        if (pending > 0) blockers.push(`${pending} QA check(s) still pending`);
+      }
+    }
+
+    return { ...item, blockers, readiness: blockers.length === 0 ? 'ready' : 'blocked' as const };
+  });
+}
 }
