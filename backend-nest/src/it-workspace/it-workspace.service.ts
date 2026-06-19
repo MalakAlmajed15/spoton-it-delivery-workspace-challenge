@@ -83,7 +83,7 @@ export class ItWorkspaceService {
   if (newStatus === 'ready_for_release') {
     const checks = item.qaChecks;
     if (checks.length === 0) throw new BadRequestException('Work item must have at least one QA check before release');
-    const allPassed = checks.every(c => c.status == 'passes');
+    const allPassed = checks.every(c => c.status == 'passed');
     if (!allPassed) throw new BadRequestException('All QA checks must pass before moving to ready_for_release');
   }
   const updated = await this.prisma.workItem.update({where: {id}, data: {status: newStatus}});
