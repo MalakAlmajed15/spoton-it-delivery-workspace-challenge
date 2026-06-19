@@ -89,7 +89,7 @@ export class ReleasesService {
             }),
             this.prisma.workItem.updateMany({
                 where: {id: {in: release.releaseItems.map(item => item.workItemId)}},
-                data: {status: 'deployed'},
+                data: {status: 'released'},
             }),
         ]);
 
