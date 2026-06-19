@@ -1,9 +1,11 @@
 import {Injectable, NotFoundException, BadRequestException, ConflictException} from '@nestjs/common';
 import {PrismaService} from '../prisma.service';
+import { ScoreService } from '../score/score.service';
+import type { RequestUser } from '../common/request-user';
 
 @Injectable()
 export class ReleasesService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService, private readonly score: ScoreService) {}
 
     async list() {
         return this.prisma.release.findMany({
@@ -71,7 +73,7 @@ export class ReleasesService {
         });
     }
 
-    async deployRelease(releaseId: string) {
+    async deployRelease(releaseId: string, user: RequestUser) {
         const release = await this.get(releaseId);
         if (release.status === 'deployed') {
             throw new BadRequestException('Release is already deployed');
@@ -91,6 +93,7 @@ export class ReleasesService {
             }),
         ]);
 
+        this.score.award(user, 'release_deployed', 15);
         return this.get(releaseId);
     }
 }

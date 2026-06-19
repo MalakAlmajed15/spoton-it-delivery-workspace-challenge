@@ -10,6 +10,8 @@ import {
 import { IsString, IsOptional, MinLength } from 'class-validator';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { ReleasesService } from './releases.service';
+import { CurrentUser } from '../common/current-user.decorator';
+import type { RequestUser } from '../common/request-user';
 
 class CreateReleaseDto {
     @IsString()
@@ -57,7 +59,7 @@ export class ReleasesController {
     }
 
     @Post(':id/deploy')
-    deployRelease(@Param('id') releaseId: string) {
-        return this.releases.deployRelease(releaseId);
+    deployRelease(@Param('id') releaseId: string, @CurrentUser() user: RequestUser) {
+        return this.releases.deployRelease(releaseId, user);
     }
 }
